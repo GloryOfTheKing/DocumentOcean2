@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LoginTest</title>
+    <script src="jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#submit").on("click",function () {
+                var checkCode = $("checkCode")
+            })
+        })
+    </script>
+</head>
+<body>
+<form action="http://127.0.0.1:8080/login">
+    <input type="text" name="username">
+    <input type="text" name="password">
+    <img src="http://127.0.0.1:8080/images/imagecode">
+    <input type="text" name="checkCode">
+    <input type="submit" id="submit">
+</form>
+</body>
+</html>

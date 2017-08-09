@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableJpaRepositories(basePackages = "org.fms.mysql.repository")
-@EntityScan(basePackages = "org.fms.mysql.entity")
+@EnableJpaRepositories(basePackages = "org.**.repository")
+@EntityScan(basePackages = "org.**.entity")
 public class JpaConfiguration {
 
 	@Bean

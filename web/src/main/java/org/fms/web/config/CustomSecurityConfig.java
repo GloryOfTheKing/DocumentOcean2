@@ -1,13 +1,10 @@
 package org.fms.web.config;
 
-import org.fms.mysql.repository.UserRepository;
 import org.fms.web.service.CustomUserDetailsService;
-import org.fms.web.service.LoginSuccessHandler;
 import org.fms.web.service.RestAuthenticationEntryPoint;
 import org.fms.web.service.RestLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,8 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * Created by lion on 2017/6/27.
@@ -32,28 +27,28 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
 	 CustomUserDetailsService customUserDetailsService;
-	@Autowired
-	private LoginSuccessHandler loginSuccessHandler;
-	@Autowired
-	private SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler;
 	@Autowired
 	RestLogoutSuccessHandler restLogoutSuccessHandler;
 	@Autowired
 	RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+	@Autowired
+	CustomSecurityMetadataSource securityMetadataSource;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 				.and()
 				.csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/images/imagecode", "/checkcode","/test").permitAll()
+				.antMatchers("/login","/images/imagecode", "/checkcode","/failure").permitAll()
 				.anyRequest().fullyAuthenticated()
 				.and()
 				.formLogin()
-				.successHandler(loginSuccessHandler)
+				.defaultSuccessUrl("/loginSuccess")
+				.failureUrl("/failure")
 				//登陆失败后的处理
-				.failureHandler(simpleUrlAuthenticationFailureHandler)
 				.and()
 				//登出后的处理
 				.logout().logoutSuccessHandler(restLogoutSuccessHandler)
@@ -61,9 +56,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 				//认证不通过后的处理
 				.exceptionHandling()
 				.authenticationEntryPoint(restAuthenticationEntryPoint);
-	};
-
-
+	}
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
@@ -83,15 +76,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public LoginSuccessHandler getLoginSuccessHandler(){
-		return new LoginSuccessHandler();
-	}
 
-	@Bean
-	public SimpleUrlAuthenticationFailureHandler getSimpleUrlAuthenticationFailureHandler(){
-		return new SimpleUrlAuthenticationFailureHandler();
-	}
 
 	@Bean
 	public RestLogoutSuccessHandler getRestLogoutSuccessHandler(){
@@ -101,6 +86,19 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public RestAuthenticationEntryPoint getRestAuthenticationEntryPoint(){
 		return new RestAuthenticationEntryPoint();
+	}
+	@Bean
+	public CustomFilterSecurityInterceptor customFilter() throws Exception{
+		CustomFilterSecurityInterceptor customFilter = new CustomFilterSecurityInterceptor();
+		customFilter.setSecurityMetadataSource(securityMetadataSource);
+		customFilter.setAccessDecisionManager(accessDecisionManager());
+		customFilter.setAuthenticationManager(authenticationManager);
+		return customFilter;
+	}
+
+	@Bean
+	public CustomAccessDecisionManager accessDecisionManager() {
+		return new CustomAccessDecisionManager();
 	}
 }
 

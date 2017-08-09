@@ -3,14 +3,14 @@ package org.fms.web.utils;
 /**
  * Http请求返回的最外层对象
  */
-public class Result<T> {
-    public Result(Integer code, String msg, T data) {
+public class ContentResults<T>{
+    public ContentResults(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    /*错误码*/
+    /*状态码*/
     private Integer code;
 
     /*提示信息*/

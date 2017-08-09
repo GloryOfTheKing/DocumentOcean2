@@ -1,56 +1,73 @@
 package org.fms.mysql.entity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
 public class Role implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long RoleID;
-    private String RoleName;
-    private String RoleDesc;
+    private Long id;
+    private String name;
+    private String info;
 
     //Have
-    @ManyToMany(cascade = {}, fetch = FetchType.EAGER)
-    @JoinTable(name = "role_permission",
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinTable(name = "role_perm",
             joinColumns = {@JoinColumn(name = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "permission_id")})
-    private List<Permission> permissions;
+            inverseJoinColumns = {@JoinColumn(name = "perm_id")})
+    private Set<Permission> permissions;
 
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
     public Role() {
     }
 
-    public Long getRoleID() {
-        return RoleID;
+    public Role(String name, String info) {
+        this.name = name;
+        this.info = info;
+        permissions = new HashSet<Permission>();
     }
 
-    public void setRoleID(Long roleID) {
-        RoleID = roleID;
+    public Long getId() {
+        return id;
     }
 
-    public String getRoleName() {
-        return RoleName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setRoleName(String roleName) {
-        RoleName = roleName;
+    public String getName() {
+        return name;
     }
 
-    public String getRoleDesc() {
-        return RoleDesc;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setRoleDesc(String roleDesc) {
-        RoleDesc = roleDesc;
+    public String getInfo() {
+        return info;
     }
 
-    public List<Permission> getPermissions() {
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Set<Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(List<Permission> permissions) {
+    public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

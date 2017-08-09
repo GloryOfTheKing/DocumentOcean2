@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by lion on 2017/6/26.
- */
+/*
+*@Author 郭恒
+*@Date 2017/7/5 20:18
+*登出成功处理器
+*/
 public class RestLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

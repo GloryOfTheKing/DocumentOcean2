@@ -9,10 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-/**
- * Created by lion on 2017/6/27.
- */
 public class SecurityUser extends User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -34,11 +32,11 @@ public class SecurityUser extends User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		List<Role> roles = this.getRoles();
+		Set<Role> roles = this.getRoles();
 		if(roles != null)
 		{
 			for (Role role : roles) {
-				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getRoleName());
+				SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
 				authorities.add(authority);
 			}
 		}

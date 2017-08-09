@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -20,25 +21,27 @@ User implements java.io.Serializable{
 
     //Dependence
     @ManyToOne
-    @JoinColumn(name = "StateID")
+    @JoinColumn(name = "stateid")
     @JsonBackReference
     private State state;
 
     //Dependence
     @ManyToOne
-    @JoinColumn(name = "DeptID")
+    @JoinColumn(name = "deptid")
     @JsonBackReference
     private Department deparment;
 
     //Act
-    @ManyToMany(cascade = {}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id")})
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public User() {
     }
+
+
 
     public Long getId() {
         return id;
@@ -104,11 +107,12 @@ User implements java.io.Serializable{
         this.deparment = deparment;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
 }

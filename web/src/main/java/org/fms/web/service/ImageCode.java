@@ -6,7 +6,11 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
+/*
+*@Author 郭恒
+*@Date 2017/7/5 19:29
+*验证码生产器
+*/
 public class ImageCode {
 
     private static char mapTable[] = {

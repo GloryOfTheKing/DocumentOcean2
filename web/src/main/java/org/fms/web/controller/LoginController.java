@@ -1,9 +1,12 @@
 package org.fms.web.controller;
 
+import org.fms.mysql.entity.User;
 import org.fms.web.service.ImageCode;
-import org.fms.web.utils.Result;
+import org.fms.web.utils.ContentResults;
+import org.fms.web.utils.Results;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,7 @@ public class LoginController {
 
 		request.getSession().setAttribute(simpleCaptcha, map.get("strEnsure").toString().toLowerCase());
 		request.getSession().setAttribute("codeTime",new Date().getTime());
+		System.out.println(request.getSession().getId()+"    1");
 		try {
 			ImageIO.write((BufferedImage) map.get("image"), "JPEG", os);
 		} catch (IOException e) {
@@ -38,17 +42,30 @@ public class LoginController {
 		return null;
 	}
 
-	@RequestMapping(value = "/test",method = RequestMethod.POST)
-	public Result<String> test(HttpSession session){
-		System.out.println(session.getAttribute("simpleCaptcha"));
-		logger.info("OK---------------------------->");
-		return new Result<String>(200,"OK",null);
+	@RequestMapping(value = "/loginSuccess",method = RequestMethod.GET)
+	public Results success(HttpServletRequest request, Authentication authentication){
+		User userDetails = (User)authentication.getPrincipal();
+
+		logger.info("登录用户user:" + userDetails.getName() + " login"+request.getContextPath());
+		logger.info("IP:" + getIpAddress(request));
+		return new Results(200,"Login Success");
+	}
+
+	@RequestMapping(value = "/failure",method = RequestMethod.GET)
+	public Results failure(){
+		return new Results(401,"Login failure");
+	}
+
+	@RequestMapping(value = "/test",method = RequestMethod.GET)
+	public Results test(){
+		return new Results(201,"test");
 	}
 
 	@RequestMapping(value = "/checkcode",method = RequestMethod.GET)
 	public String checkcode(HttpServletRequest request, HttpSession session)
 			throws Exception {
         String checkCode = request.getParameter("checkCode");
+        System.out.println(session.getId()+"    2");
 		System.out.println(session.getAttribute("simpleCaptcha")+checkCode);
 		Object cko = session.getAttribute("simpleCaptcha") ; //验证码对象
 		if(cko == null){
@@ -71,5 +88,26 @@ public class LoginController {
         }
 
 	}
-
+	/*
+	*获得登陆时的ip地址
+	*/
+	public String getIpAddress(HttpServletRequest request){
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_CLIENT_IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip;
+	}
 }

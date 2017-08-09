@@ -1,49 +1,53 @@
 package org.fms.mysql.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "department")
 public class Department implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long DeptID;
-    private String DeptName;
-    private String DeptDesc;
-    private Long SupDept;
+    private Long id;
+    private String name;
+    private String info;
+    private Long supDept;
+
+    @OneToMany(mappedBy = "deparment")
+    Set<User> users;
 
     public Department() {
     }
 
-    public Long getDeptID() {
-        return DeptID;
+    public Long getId() {
+        return id;
     }
 
-    public void setDeptID(Long deptID) {
-        DeptID = deptID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getDeptName() {
-        return DeptName;
+    public String getName() {
+        return name;
     }
 
-    public void setDeptName(String deptName) {
-        DeptName = deptName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDeptDesc() {
-        return DeptDesc;
+    public String getInfo() {
+        return info;
     }
 
-    public void setDeptDesc(String deptDesc) {
-        DeptDesc = deptDesc;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public Long getSupDept() {
-        return SupDept;
+        return supDept;
     }
 
     public void setSupDept(Long supDept) {
-        SupDept = supDept;
+        this.supDept = supDept;
     }
 }

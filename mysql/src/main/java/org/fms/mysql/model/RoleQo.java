@@ -1,22 +1,15 @@
-package org.fms.mysql.entity;
+package org.fms.mysql.model;
 
-
-import javax.persistence.*;
-import java.util.Set;
-
-@Entity
-@Table(name = "state")
-public class State implements java.io.Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+/**
+ * Created by lion on 2017/8/9.
+ */
+public class RoleQo extends PageQo{
     private Long id;
     private String name;
     private String info;
 
-    @OneToMany(mappedBy = "state")
-    private Set<User> users;
+    public RoleQo() {
 
-    public State() {
     }
 
     public Long getId() {
