@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by lion on 2017/8/9.
  */
-@RestController("/role")
+@RestController
+@RequestMapping("role")
 public class RoleController {
 
     @Autowired
@@ -56,7 +57,7 @@ public class RoleController {
         if(role == null){
             return new ContentResults<Role>(404,"Can't find the Role",null);
         }
-        return new ContentResults<Role>(200,"Can't find the Role",role);
+        return new ContentResults<Role>(200,"Find the Role",role);
     }
 }
 

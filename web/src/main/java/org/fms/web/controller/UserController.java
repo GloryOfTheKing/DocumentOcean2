@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by lion on 2017/8/8.
  */
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
