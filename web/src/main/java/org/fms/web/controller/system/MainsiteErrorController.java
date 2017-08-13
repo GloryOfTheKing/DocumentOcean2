@@ -1,6 +1,5 @@
-package org.fms.web.controller;
+package org.fms.web.controller.system;
 
-import org.fms.web.utils.ContentResults;
 import org.fms.web.utils.Results;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;

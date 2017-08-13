@@ -1,5 +1,7 @@
 package org.fms.mysql.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -17,6 +19,7 @@ public class Permission {
     private String mehtod;
 
     @ManyToMany(mappedBy = "permissions", fetch=FetchType.EAGER)
+    @JsonBackReference
     private Set<Role> roles;
 
     public Permission() {

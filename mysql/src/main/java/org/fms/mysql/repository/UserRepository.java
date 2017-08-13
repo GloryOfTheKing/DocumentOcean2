@@ -14,4 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
 	User findByName(String name);
+	@Query("select t from User t where t.name like :name")
+	Page<User> findByName(@Param("name") String name, Pageable pageRequest);
+
 }

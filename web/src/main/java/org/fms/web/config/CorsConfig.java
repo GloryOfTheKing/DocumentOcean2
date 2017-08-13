@@ -16,8 +16,8 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
 				.allowedOrigins("*")//参数代表可以访问该接口的域名，设置为”*”可支持所有域。
+				.allowedMethods("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE")
 				.allowCredentials(true)
-				.allowedMethods("GET", "POST", "DELETE", "PUT")//请求方式
 				.maxAge(3600);
 	}
 

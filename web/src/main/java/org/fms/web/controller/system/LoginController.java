@@ -1,11 +1,12 @@
-package org.fms.web.controller;
+package org.fms.web.controller.system;
 
 import org.fms.mysql.entity.User;
+import org.fms.mysql.repository.UserRepository;
 import org.fms.web.service.ImageCode;
-import org.fms.web.utils.ContentResults;
 import org.fms.web.utils.Results;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,10 @@ import java.util.Map;
 @RestController
 public class LoginController {
 	Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+	@Autowired
+	UserRepository userRepository;
+
 	@RequestMapping(value = "/images/imagecode")
 	public String imagecode(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -30,10 +35,8 @@ public class LoginController {
 		Map<String,Object> map = ImageCode.getImageCode(60, 20, os);
 
 		String simpleCaptcha = "simpleCaptcha";
-
 		request.getSession().setAttribute(simpleCaptcha, map.get("strEnsure").toString().toLowerCase());
 		request.getSession().setAttribute("codeTime",new Date().getTime());
-		System.out.println(request.getSession().getId()+"    1");
 		try {
 			ImageIO.write((BufferedImage) map.get("image"), "JPEG", os);
 		} catch (IOException e) {
@@ -45,9 +48,10 @@ public class LoginController {
 	@RequestMapping(value = "/loginSuccess",method = RequestMethod.GET)
 	public Results success(HttpServletRequest request, Authentication authentication){
 		User userDetails = (User)authentication.getPrincipal();
-
+		String Ip = getIpAddress(request);
 		logger.info("登录用户user:" + userDetails.getName() + " login"+request.getContextPath());
-		logger.info("IP:" + getIpAddress(request));
+		logger.info("IP:" + Ip);
+		userDetails.setIP(Ip);
 		return new Results(200,"Login Success");
 	}
 
@@ -65,8 +69,6 @@ public class LoginController {
 	public String checkcode(HttpServletRequest request, HttpSession session)
 			throws Exception {
         String checkCode = request.getParameter("checkCode");
-        System.out.println(session.getId()+"    2");
-		System.out.println(session.getAttribute("simpleCaptcha")+checkCode);
 		Object cko = session.getAttribute("simpleCaptcha") ; //验证码对象
 		if(cko == null){
             request.setAttribute("errorMsg", "验证码已失效，请重新输入！验证码为空");

@@ -94,11 +94,7 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
         }*/
         while (ite.hasNext()) {
             String resURL = ite.next();
-            System.out.println(resURL);
-            System.out.println(url);
-            System.out.println(pathMatcher.match(resURL,url));
             if (pathMatcher.match(resURL,url)) {
-                System.out.println(resourceMap.get(resURL).size());
                 return resourceMap.get(resURL);
             }
         }

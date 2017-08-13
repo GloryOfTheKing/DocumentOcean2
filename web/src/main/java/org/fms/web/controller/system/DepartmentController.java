@@ -1,4 +1,4 @@
-package org.fms.web.controller;
+package org.fms.web.controller.system;
 
 import org.fms.mysql.entity.Department;
 import org.fms.mysql.repository.DepartmentRepository;

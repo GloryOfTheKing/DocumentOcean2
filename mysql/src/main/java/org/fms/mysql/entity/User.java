@@ -18,18 +18,21 @@ User implements java.io.Serializable{
     private String phone;
     private String job;
     private String email;
+    private String IP;
 
     //Dependence
     @ManyToOne
     @JoinColumn(name = "stateid")
-    @JsonBackReference
     private State state;
 
     //Dependence
     @ManyToOne
     @JoinColumn(name = "deptid")
-    @JsonBackReference
     private Department deparment;
+
+    @OneToMany(mappedBy = "fileMessage")
+    @JsonBackReference
+    private Set<FileMessage> fileMessages;
 
     //Act
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -41,7 +44,21 @@ User implements java.io.Serializable{
     public User() {
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", job='" + job + '\'' +
+                ", email='" + email + '\'' +
+                ", IP='" + IP + '\'' +
+                ", state=" + state +
+                ", deparment=" + deparment +
+                ", roles=" + roles +
+                '}';
+    }
 
     public Long getId() {
         return id;
@@ -115,4 +132,19 @@ User implements java.io.Serializable{
         this.roles = roles;
     }
 
+    public String getIP() {
+        return IP;
+    }
+
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public Set<FileMessage> getFileMessages() {
+        return fileMessages;
+    }
+
+    public void setFileMessages(Set<FileMessage> fileMessages) {
+        this.fileMessages = fileMessages;
+    }
 }

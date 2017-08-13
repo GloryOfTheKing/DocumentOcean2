@@ -1,5 +1,7 @@
 package org.fms.mysql.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +23,7 @@ public class Role implements java.io.Serializable{
     private Set<Permission> permissions;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     private Set<User> users;
     public Role() {
     }

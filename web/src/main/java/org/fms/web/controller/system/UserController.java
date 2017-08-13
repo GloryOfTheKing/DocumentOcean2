@@ -1,38 +1,59 @@
-package org.fms.web.controller;
+package org.fms.web.controller.system;
 
 import org.fms.mysql.entity.User;
 import org.fms.mysql.model.UserQo;
 import org.fms.mysql.repository.UserRepository;
 import org.fms.web.utils.ContentResults;
 import org.fms.web.utils.Results;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * Created by lion on 2017/8/8.
  */
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
-
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserRepository userRepository;
 
     @RequestMapping(path = "/findAll",method = RequestMethod.GET)
-    public ContentResults<Page> findAll(UserQo userQo){
-        Pageable pageable = new PageRequest(userQo.getPage(), userQo.getSize(), new Sort(Sort.Direction.ASC, "id"));
-        Page<User> userPage = userRepository.findAll(pageable);
-        return new ContentResults<Page>(200,"Find Users",userPage);
+    @ResponseBody
+    public ContentResults<List<User>>findAll2(){
+        List<User> userList= userRepository.findAll();
+        userList.forEach(user -> {
+            System.out.println(user);
+        });
+        return new ContentResults<List<User>>(200,"Find Users",userList);
+    }
+
+    @RequestMapping(path = "/findPage",method = RequestMethod.GET)
+    @ResponseBody
+    public ContentResults<Map> findAll(UserQo userQo){
+        System.out.println(userQo.getPage());
+        try {
+            Pageable pageable = new PageRequest(0, 1, new Sort(Sort.Direction.ASC, "id"));
+            Page<User> userPage = userRepository.findAll(pageable);
+            Map<String,Page> map= new HashMap<String,Page>();
+            map.put("data",userPage);
+            return new ContentResults<Map>(200,"Find Users",map);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping(path = "/add",method = RequestMethod.POST)

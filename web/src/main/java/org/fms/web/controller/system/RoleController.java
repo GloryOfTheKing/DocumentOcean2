@@ -1,4 +1,4 @@
-package org.fms.web.controller;
+package org.fms.web.controller.system;
 
 import org.fms.mysql.entity.Role;
 import org.fms.mysql.model.RoleQo;

@@ -1,6 +1,8 @@
 package org.fms.mysql.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ public class State implements java.io.Serializable{
     private String info;
 
     @OneToMany(mappedBy = "state")
+    @JsonBackReference
     private Set<User> users;
 
     public State() {

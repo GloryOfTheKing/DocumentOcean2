@@ -1,5 +1,7 @@
 package org.fms.mysql.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ public class Department implements java.io.Serializable{
     private Long supDept;
 
     @OneToMany(mappedBy = "deparment")
+    @JsonBackReference
     Set<User> users;
 
     public Department() {
