@@ -8,9 +8,9 @@ import java.util.Date;
 /**
  * Created by lion on 2017/8/13.
  */
-@Entity
+//@Entity
 public class FileMessage {
-    @Id
+ /*   @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
@@ -61,5 +61,5 @@ public class FileMessage {
 
     public void setBuildTime(Date buildTime) {
         this.buildTime = buildTime;
-    }
+    }*/
 }

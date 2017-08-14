@@ -1,12 +1,13 @@
-package org.fms.web.utils;
+package org.fms.web.utils.results;
 
 /**
- * Created by lion on 2017/8/9.
+ * Http请求返回的最外层对象
  */
-public class Results {
-    public Results(Integer code, String msg) {
+public class ContentResults<T>{
+    public ContentResults(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
+        this.data = data;
     }
 
     /*状态码*/
@@ -15,6 +16,8 @@ public class Results {
     /*提示信息*/
     private String msg;
 
+    /*具体的内容*/
+    private T data;
 
     public Integer getCode() {
         return code;
@@ -32,4 +35,11 @@ public class Results {
         this.msg = msg;
     }
 
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }

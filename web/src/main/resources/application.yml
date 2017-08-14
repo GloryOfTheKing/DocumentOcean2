@@ -17,3 +17,5 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+filepath:
+  ROOT: C:\Users\lion\Desktop\

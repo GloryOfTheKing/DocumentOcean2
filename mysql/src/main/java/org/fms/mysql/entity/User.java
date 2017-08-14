@@ -30,9 +30,9 @@ User implements java.io.Serializable{
     @JoinColumn(name = "deptid")
     private Department deparment;
 
-    @OneToMany(mappedBy = "fileMessage")
+    /*@OneToMany(mappedBy = "fileMessage")
     @JsonBackReference
-    private Set<FileMessage> fileMessages;
+    private Set<FileMessage> fileMessages;*/
 
     //Act
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -140,11 +140,11 @@ User implements java.io.Serializable{
         this.IP = IP;
     }
 
-    public Set<FileMessage> getFileMessages() {
+ /*   public Set<FileMessage> getFileMessages() {
         return fileMessages;
     }
 
     public void setFileMessages(Set<FileMessage> fileMessages) {
         this.fileMessages = fileMessages;
     }
-}
+*/}

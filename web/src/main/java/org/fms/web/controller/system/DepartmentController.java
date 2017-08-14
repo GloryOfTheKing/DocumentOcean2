@@ -2,8 +2,8 @@ package org.fms.web.controller.system;
 
 import org.fms.mysql.entity.Department;
 import org.fms.mysql.repository.DepartmentRepository;
-import org.fms.web.utils.ContentResults;
-import org.fms.web.utils.Results;
+import org.fms.web.utils.results.ContentResults;
+import org.fms.web.utils.results.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

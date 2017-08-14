@@ -3,7 +3,7 @@ package org.fms.web.controller.system;
 import org.fms.mysql.entity.User;
 import org.fms.mysql.repository.UserRepository;
 import org.fms.web.service.ImageCode;
-import org.fms.web.utils.Results;
+import org.fms.web.utils.results.Results;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
